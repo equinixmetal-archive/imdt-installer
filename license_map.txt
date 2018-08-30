@@ -1,0 +1,16 @@
+# map of drive serial numbers to license file that supports them
+# path is relative to this file
+# each license file may have zero, one or more licenses
+# however, each drive serial should point to the file that contains it
+# format is SERIAL=LICENSE_PATH
+PHKE750400PF750BGN=licenses/IMDT_Licenses-IMDT38649870.txt
+PHKE750400LK750BGN=licenses/IMDT_Licenses-IMDT38649870.txt
+PHKE750400PR750BGN=licenses/IMDT_Licenses-IMDT38748162.txt
+PHKE7504006Y750BGN=licenses/IMDT_Licenses-IMDT38748162.txt
+PHKE750400P2750BGN=licenses/IMDT_Licenses-IMDT38760449.txt
+PHKE750400KE750BGN=licenses/IMDT_Licenses-IMDT38760449.txt
+PHKE750400NV750BGN=licenses/IMDT_Licenses-IMDT38789127.txt
+PHKE750400QC750BGN=licenses/IMDT_Licenses-IMDT38789127.txt
+PHKE750400N4750BGN=licenses/IMDT_Licenses-IMDT38789129.txt
+PHKE7504004P750BGN=licenses/IMDT_Licenses-IMDT38789129.txt
+
