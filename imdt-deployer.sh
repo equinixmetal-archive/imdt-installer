@@ -1,5 +1,8 @@
 #!/bin/sh
 
+set -e
+
+
 UTIL_VERSION=8.6.2535.27
 UTIL_FILE=imdt_installer-${UTIL_VERSION}.sh
 UTIL_URL=http://memorydrv.com/downloads/${UTIL_VERSION}/${UTIL_FILE}
@@ -18,6 +21,8 @@ for i in /sys/module/nvme/drivers/*nvme*/*/nvme/nvm*; do
   start=${i#/sys/module/nvme/drivers/*nvme*/}
   id=${start%/nvme/*}
   device_id=$(cat /sys/module/nvme/drivers/*nvme*/$id/subsystem_device)
+  model=$(cat $i/model)
+  serial=$(cat $i/serial)
   # only use nvme devices that are Optanes
   if ! echo ${OPTANE_DEVIES} | grep ${device_id} ; then
     continue
@@ -26,6 +31,7 @@ for i in /sys/module/nvme/drivers/*nvme*/*/nvme/nvm*; do
   drives="$drives $dev:$numa"
   numas="$numas $numa"
 done
+
 
 # get a unique list of numas
 numas=$(echo "${numas}" | tr ' ' '\n' | sort -u)
