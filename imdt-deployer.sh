@@ -11,11 +11,14 @@ CONFIG_PATH=/usr/local/etc
 LICENSE_FILE=${CONFIG_PATH}/imdt_license.list
 UTIL_PATH=${INSTALL_PATH}/${UTIL_FILE}
 OPTANE_DEVICES="0x3904 0x3905"
+CONFIG_BASE=https://raw.githubusercontent.com/packethost/imdt-installer/master/
+LICENSE_MAP=${CONFIG_BASE}/license_map.txt
 
 drives=
 numas=
+serials=
 
-# get list of drives and associated numas
+# get list of drives and associated numas, model numbers, and serial numbers
 for i in /sys/module/nvme/drivers/*nvme*/*/nvme/nvm*; do 
   dev=$(basename $i)
   start=${i#/sys/module/nvme/drivers/*nvme*/}
@@ -30,56 +33,42 @@ for i in /sys/module/nvme/drivers/*nvme*/*/nvme/nvm*; do
   numa=$(cat /sys/module/nvme/drivers/*nvme*/$id/numa*)
   drives="$drives $dev:$numa"
   numas="$numas $numa"
+  serials="$serials $serial"
 done
 
 
 # get a unique list of numas
 numas=$(echo "${numas}" | tr ' ' '\n' | sort -u)
 
-# for now, we just take the last two ignoring duplicates, but that will have to change
-
-# download the installer
-mkdir -p $INSTALL_PATH $CONFIG_PATH
-cd ${INSTALL_PATH}
-curl -O -L ${UTIL_URL}
-chmod +x ${UTIL_PATH}
-
-# the below will be automated in the next revision
-echo "Will run installer"
-echo "When requested, select the correct drives to use. They must meet the following criteria:"
-echo "  1) they must be Optanes"
-echo "  2) they must not share numas"
-echo
-echo "The list of nvme drives and associated numas is the following:"
-for i in $drives; do
-  echo $i | tr ':' ' '
+# download the map of licenses
+license_map=$(curl -L $LICENSE_MAP)
+# must find a license file for at least two of the drives
+license_files=
+for i in $serials; do
+  file=$(echo "$license_map" | awk -F= "/$i/ "'{print $2}')
+  license_files="$license_files $file"
 done
 
-${UTIL_PATH} in -n
+# now check that we have exactly two total and one unique license file
+license_file_count=$(echo $license_files | wc -w)
+license_file_unique=$(echo $license_files  | tr ' ' '\n' | sort -u)
+expected=2
+if [ $license_file_count -ne $expected ]; then
+  echo "Found $license_file_count licensed drives instead of expected ${expected}. Exiting." >&2
+  exit 1
+fi
+if [ $license_file_unique -ne 1 ]; then
+  echo "Found $license_file_unique license files instead of required 1. Exiting." >&2
+  exit 1
+fi
 
-echo
-echo "Now await the license file via provided email."
-echo "You CANNOT copy the contents of the file, as it is digitally signed."
-echo "You MUST upload the file as is."
-echo "We recommend using scp."
-echo "The license file should be saved as ${LICENSE_FILE}"
-
-echo "When the license file is uploaded, hit enter to continue"
-read wait
-
-${UTIL_PATH} in -n ${LICENSE_FILE}
-
-echo 
-echo "Changing BIOS boot order"
-
-# we want the following order:
-#  IMDT (either)
-#  previous default
-#  PXE UEFI IPv4: Intel Network 00 at Riser 02 Slot 01
+# download license file
+curl -L ${CONFIG_BASE}/${license_file_unique} > ${LICENSE_FILE}
 
 # some basic requirements
 #   bzip2
 #   efibootmgr
+echo "Installing basic requirements"
 if which yum > /dev/null; then
   yum update -y
   yum install -y efibootmgr bzip2
@@ -90,6 +79,25 @@ else
   echo "Unknown package manager. Exiting"
   exit 1
 fi
+
+# download the installer
+echo "Downloading IMDT installer"
+mkdir -p $INSTALL_PATH $CONFIG_PATH
+cd ${INSTALL_PATH}
+curl -O -L ${UTIL_URL}
+chmod +x ${UTIL_PATH}
+
+echo "Running installer"
+
+${UTIL_PATH} in -n ${LICENSE_FILE}
+
+echo 
+echo "Changing BIOS boot order"
+
+# we want the following order:
+#  IMDT (either)
+#  previous default
+#  PXE UEFI IPv4: Intel Network 00 at Riser 02 Slot 01
 
 # save the current boot order
 bootstate=$(efibootmgr)
