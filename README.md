@@ -12,3 +12,8 @@ As of this writing, the installer works on CentOS 7 and Ubuntu 16.04. The formal
 
 For any problems, open an issue here.
 
+## License Files
+The license files are included in this repository under [licenses/](./licenses/). These can be included as they are usable _omnly_ with the particular physical drive and are digitally signed.
+
+
+
