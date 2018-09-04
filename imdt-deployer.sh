@@ -98,7 +98,7 @@ chmod +x ${UTIL_PATH}
 
 echo "Running installer"
 
-${UTIL_PATH} in -q -n ${LICENSE_FILE}
+${UTIL_PATH} in -n ${LICENSE_FILE}
 
 echo 
 echo "Changing BIOS boot order"
