@@ -125,4 +125,15 @@ imdt_entries=$(efibootmgr | awk '/IMDT/ {print $1}' | sed 's/^Boot//g; s/\*//g' 
 # this is unnecessary, since creating the new ones automatically sets them
 neworder="${imdt_entries},${order}"
 
+# check if intel VT extensions are enabled or not
+vmx=$(grep -o -w vmx /proc/cpuinfo || true)
+if [ -z "$vmx" ]; then
+  echo "Intel VT and VT-d extensions are NOT enabled in BIOS. You must reboot into BIOS, enable them, and then reboot for IMDT to work."
+  echo "   - To enable VT, the path normally is 'Advanced | Process Configuration | Intel Virtualization Technology'."
+  echo "   - To enable VT-d, the path normally is 'Advanced | Integrated IO Configuration | Intel VT for Directed I/O'."
+  echo
+fi
+
+echo "Installation complete."
+
 
