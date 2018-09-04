@@ -35,7 +35,7 @@ for i in /sys/module/nvme/drivers/*nvme*/*/nvme/nvm*; do
   model=$(cat $i/model)
   serial=$(cat $i/serial)
   # only use nvme devices that are Optanes
-  if ! echo ${OPTANE_DEVIES} | grep ${device_id} ; then
+  if ! echo ${OPTANE_DEVICES} | grep ${device_id} ; then
     continue
   fi
   numa=$(cat /sys/module/nvme/drivers/*nvme*/$id/numa*)
