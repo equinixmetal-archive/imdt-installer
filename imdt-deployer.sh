@@ -3,9 +3,9 @@
 set -e
 
 
-UTIL_VERSION=8.6.2535.27
+UTIL_VERSION=8.6.2535.19
 UTIL_FILE=imdt_installer-${UTIL_VERSION}.sh
-UTIL_URL=http://memorydrv.com/downloads/${UTIL_VERSION}/${UTIL_FILE}
+UTIL_URL=https://memorydrv.com/downloads/${UTIL_VERSION}/${UTIL_FILE}
 INSTALL_PATH=/usr/local/bin
 CONFIG_PATH=/usr/local/etc
 LICENSE_FILE=${CONFIG_PATH}/imdt_license.list
