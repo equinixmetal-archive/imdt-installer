@@ -60,12 +60,13 @@ done
 # now check that we have exactly two total and one unique license file
 license_file_count=$(echo $license_files | wc -w)
 license_file_unique=$(echo $license_files  | tr ' ' '\n' | sort -u)
+license_file_unique_count=$(echo $license_file_unique  | wc -w)
 expected=2
 if [ $license_file_count -ne $expected ]; then
   echo "Found $license_file_count licensed drives instead of expected ${expected}. Exiting." >&2
   exit 1
 fi
-if [ $license_file_unique -ne 1 ]; then
+if [ $license_file_unique_count -ne 1 ]; then
   echo "Found $license_file_unique license files instead of required 1. Exiting." >&2
   exit 1
 fi
