@@ -14,6 +14,14 @@ OPTANE_DEVICES="0x3904 0x3905"
 CONFIG_BASE=https://raw.githubusercontent.com/packethost/imdt-installer/master/
 LICENSE_MAP=${CONFIG_BASE}/license_map.txt
 
+# check if intel VT extensions exist or not
+vmx=$(grep -o -w vmx /proc/cpuinfo || true)
+if [ -z "$vmx" ]; then
+  echo "Intel VT-x/VT-d extensions are NOT supported on this computer. IMDT will not work."
+  exit 1
+fi
+
+
 drives=
 numas=
 serials=
@@ -125,11 +133,10 @@ imdt_entries=$(efibootmgr | awk '/IMDT/ {print $1}' | sed 's/^Boot//g; s/\*//g' 
 # this is unnecessary, since creating the new ones automatically sets them
 neworder="${imdt_entries},${order}"
 
-# check if intel VT extensions are enabled or not
-vmx=$(grep -o -w vmx /proc/cpuinfo || true)
-if [ -z "$vmx" ]; then
-  echo "Intel VT and VT-d extensions are NOT enabled in BIOS. You must reboot into BIOS, enable them, and then reboot for IMDT to work."
-  echo "   - To enable VT, the path normally is 'Advanced | Process Configuration | Intel Virtualization Technology'."
+# check if Intel VT-x/VT-d extensions are enabled in BIOS
+if [ ! -e /dev/kvm ]; then
+  echo "Intel VT-x and VT-d extensions are NOT enabled in BIOS. You must reboot into BIOS, enable them, and then reboot for IMDT to work."
+  echo "   - To enable VT-x, the path normally is 'Advanced | Process Configuration | Intel Virtualization Technology'."
   echo "   - To enable VT-d, the path normally is 'Advanced | Integrated IO Configuration | Intel VT for Directed I/O'."
   echo
 fi
