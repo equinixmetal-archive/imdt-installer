@@ -3,7 +3,7 @@
 set -e
 
 
-UTIL_VERSION=8.6.2535.19
+UTIL_VERSION=8.6.2535.51
 UTIL_FILE=imdt_installer-${UTIL_VERSION}.sh
 UTIL_URL=https://memorydrv.com/downloads/${UTIL_VERSION}/${UTIL_FILE}
 INSTALL_PATH=/usr/local/bin
