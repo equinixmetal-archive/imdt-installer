@@ -134,6 +134,14 @@ imdt_entries=$(efibootmgr | awk '/IMDT/ {print $1}' | sed 's/^Boot//g; s/\*//g' 
 # this is unnecessary, since creating the new ones automatically sets them
 neworder="${imdt_entries},${order}"
 
+#
+# turn off swap and disable it
+swapoff -a
+# disable in /etc/fstab
+sed -i.bak 's/^\(.*\sswap\s.*\)$/#\1/g' /etc/fstab
+rm -f /etc/fstab.bak
+
+
 # check if Intel VT-x/VT-d extensions are enabled in BIOS
 if [ ! -e /dev/kvm ]; then
   echo "Intel VT-x and VT-d extensions are NOT enabled in BIOS. You must reboot into BIOS, enable them, and then reboot for IMDT to work."
