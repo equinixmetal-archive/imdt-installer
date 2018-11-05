@@ -3,8 +3,6 @@
 # each license file may have zero, one or more licenses
 # however, each drive serial should point to the file that contains it
 # format is SERIAL=LICENSE_PATH
-PHKE750400N4750BGN=licenses/IMDT_Licenses-IMDT38789129.txt
-PHKE7504004P750BGN=licenses/IMDT_Licenses-IMDT38789129.txt
 PHKE750400PF750BGN=licenses/IMDT_Licenses-IMDT39129089.txt
 PHKE750400LK750BGN=licenses/IMDT_Licenses-IMDT39129089.txt
 PHKE750400PR750BGN=licenses/IMDT_Licenses-IMDT39153665.txt
@@ -13,3 +11,5 @@ PHKE750400NV750BGN=licenses/IMDT_Licenses-IMDT38789128.txt
 PHKE750400QC750BGN=licenses/IMDT_Licenses-IMDT38789128.txt
 PHKE750400P2750BGN=licenses/IMDT_Licenses-IMDT39165955.txt
 PHKE750400KE750BGN=licenses/IMDT_Licenses-IMDT39165955.txt
+PHKE750400N4750BGN=licenses/IMDT_Licenses-IMDT39211010.txt
+PHKE7504004P750BGN=licenses/IMDT_Licenses-IMDT39211010.txt
