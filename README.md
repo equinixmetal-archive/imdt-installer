@@ -1,8 +1,13 @@
+![](https://img.shields.io/badge/Stability-EndOfLife-black.svg)
+
+## End of Life Statement
+
+This repository is [End of Life](https://github.com/packethost/standards/blob/master/end-of-life-statement.md) that this software is no longer supported nor maintained by Packet or its community.
+
 # Packet IMDT Installer
 This repository contains utilities for installing and managing IMDT on [AccelerateWithOptane](https://www.acceleratewithoptane.com) lab servers at [Packet](https://packet.net).
 
 As of this writing, the installer works on CentOS 7 and Ubuntu 16.04. The formal help page is available at Packet Help at [this location](https://help.packet.net/solutions/platforms/enabling-optane-drives-as-imdt)
-
 
 1. Install the Optane enabled server using the normal Packet process, either via the UI or the API
 2. Log into the server as root
@@ -14,6 +19,3 @@ For any problems, open an issue here.
 
 ## License Files
 The license files are included in this repository under [licenses/](./licenses/). These can be included as they are usable _omnly_ with the particular physical drive and are digitally signed.
-
-
-
